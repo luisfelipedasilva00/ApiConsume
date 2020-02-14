@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { MdAddShoppingCart } from 'react-icons/md';
@@ -8,38 +8,34 @@ import { formatPrice } from '../../util/format';
 import * as CartActions from '../../store/modules/cart/actions';
 import { ProductList } from './styles';
 
-class Home extends Component {
-  // eslint-disable-next-line react/state-in-constructor
-  state = {
-    products: [],
-  };
+function Home({amount, addToCartRequest}) {
+  const [products, setProducts] = useState([]);
 
-  async componentDidMount() {
-    const response = await api.get('products');
+  // replace componentDidMount
+  useEffect (() => {
+    async function loadProducts() {
+      const response = await api.get('products');
 
-    // create format price to execute one time, intead of in render that will be execute many times - good practices to avoid unnecessary processing
-    const data = response.data.map(product => ({
-      ...product,
-      priceFormatted: formatPrice(product.price),
-    }));
+      // create format price to execute one time, intead of in render that will be execute many times - good practices to avoid unnecessary processing
+      const data = response.data.map(product => ({
+        ...product,
+        priceFormatted: formatPrice(product.price),
+      }));
 
-    this.setState({ products: data });
-  }
+      setProducts(data);
+    }
+
+    loadProducts();
+  }, []) //to execute only one time - no monitore anyone status
 
   // every component that connect with redux receive the dispatch property in props
-  handleAddProduct = id => {
+  function handleAddProduct (id) {
     /* const { dispatch } = this.props;
     dispatch(CartActions.addToCart(product)); */
 
     // after use const mapDispatchToProps, code is like that
-    const { addToCartRequest } = this.props;
-
     addToCartRequest(id);
   };
-
-  render() {
-    const { products } = this.state;
-    const { amount } = this.props;
 
     return (
       <ProductList>
@@ -51,7 +47,7 @@ class Home extends Component {
 
             <button
               type="button"
-              onClick={() => this.handleAddProduct(product.id)}
+              onClick={() => handleAddProduct(product.id)}
             >
               <div>
                 <MdAddShoppingCart size={16} color="#fff" />{' '}
@@ -64,7 +60,7 @@ class Home extends Component {
       </ProductList>
     );
   }
-}
+
 
 const mapStateToProps = state => ({
   amount: state.cart.reduce((amount, product) => {
