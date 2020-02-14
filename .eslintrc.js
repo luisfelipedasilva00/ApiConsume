@@ -26,7 +26,7 @@ module.exports = {
     'prettier'
   ],
   rules: {
-    'prettier/prettier': 'error',
+    /*'prettier/prettier': 'error',
     'react/jsx-filename-extension': [
       'warn',
       { extensions: [ '.jsx', '.js' ] }
@@ -36,6 +36,19 @@ module.exports = {
     "class-methods-use-this": "off",
     "no-param-reassign": "off",
     "camelcase": "off",
-    "no-unused-vars": ["error", {"argsIgnorePattern":"next"}]
+    "no-unused-vars": ["error", {"argsIgnorePattern":"next"}]*/
+    'prettier/prettier': 'error',
+    'react/jsx-filename-extension' : [
+      'warn',
+      {
+        extensions: ['.jsx','.js']
+      }
+    ],
+    "class-methods-use-this": "off",
+    "no-param-reassign": "off",
+    "camelcase": "off",
+    "no-unused-vars": ["error", {"argsIgnorePattern":"next"}],
+    'import/prefer-default-export': 'off',
+    'no-console': ["error", {allow: ["tron"]}]
   },
 };
