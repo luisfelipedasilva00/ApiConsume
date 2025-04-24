@@ -1,2 +1,2 @@
 # ApiConsume With React
-Only Study Project - By RocketSeat
+Only Study Project
